@@ -1,4 +1,4 @@
-/system script add name=pppoe-update source={
+/system script add name=pppoe-ssid-update source={
 
 :local oldDomain "@mensel"
 :local newDomain "@wifiber"
@@ -22,4 +22,4 @@
 
 :put "[OK] Script completed."
 }
-/system script run pppoe-update
+/system script run pppoe-ssid-update
