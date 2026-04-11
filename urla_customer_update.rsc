@@ -1,25 +1,29 @@
 /system script add name=pppoe-ssid-update source={
 
-:local oldDomain "@mensel"
 :local newDomain "@wifiber"
-:if ([/interface pppoe-client print count-only] > 0) do={
-    :local curUser [/interface pppoe-client get 0 user]
-    :local atIndex [:find $curUser "@"]
-    
-    :if ($atIndex != "") do={
-        :local prefix [:pick $curUser 0 $atIndex]
-        :local newUser ($prefix . $newDomain)
-        
-        :put ("Updating: $curUser  ->  $newUser")
-        
-        :put "[OK] PPPoE updated."
+
+:foreach pppId in=[/interface pppoe-client find] do={
+    :local curUser [/interface pppoe-client get $pppId user]
+    :if ($curUser = "") do={
+        :put "[SKIP] PPPoE user empty"
     } else={
-        :put "[ERROR] No @ symbol found in username: $curUser"
+        :local atIndex [:find $curUser "@"]
+        :if ($atIndex = "") do={
+            :put ("[ERROR] No @ symbol found in username: " . $curUser)
+        } else={
+            :local prefix [:pick $curUser 0 $atIndex]
+            :local newUser ($prefix . $newDomain)
+
+            :if ($curUser = $newUser) do={
+                :put ("[SKIP] PPPoE already updated: " . $curUser)
+            } else={
+                /interface pppoe-client set $pppId user=$newUser
+                :put ("[OK] PPPoE updated: " . $curUser . " -> " . $newUser)
+            }
+        }
     }
-} else={
-    :put "[ERROR] No PPPoE client found!"
 }
 
 :put "[OK] Script completed."
-:log info ("PPPOE and WLAN updated")
+:log info ("Lafta Degil, Terminalde IT olunur - Muhammet")
 }
