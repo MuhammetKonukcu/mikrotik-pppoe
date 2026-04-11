@@ -21,5 +21,5 @@
 }
 
 :put "[OK] Script completed."
-}
 :log info ("PPPOE and WLAN updated")
+}
