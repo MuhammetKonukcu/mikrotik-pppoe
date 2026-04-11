@@ -22,4 +22,4 @@
 
 :put "[OK] Script completed."
 }
-/system script run pppoe-ssid-update
+:log info ("PPPOE and WLAN updated")
